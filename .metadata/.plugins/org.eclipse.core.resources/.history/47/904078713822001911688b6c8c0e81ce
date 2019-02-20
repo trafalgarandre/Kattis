@@ -1,0 +1,13 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
+
+public class permutation {
+	static int[] arr = new int[10];
+	
+	public static void main(String args[]) {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+	}
+	
+	
+}

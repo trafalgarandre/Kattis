@@ -1,0 +1,52 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+
+public class kattis_playfair {
+	public static void main(String args[]) throws NumberFormatException, IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		
+		boolean[] check = new boolean[27];
+		myChar[] b = new myChar[27];
+		for (int i = 0; i < 27; i++) {
+			check[i] = false;
+		}
+		check['q' - 'a'] = true;
+		int row = 0;
+		int col = 0;
+		char[][] a = new char[5][5];
+		
+		for (char c: reader.readLine().toCharArray()) {
+			if (c == ' ' || check[c - 'a']) {
+				continue;
+			} else {
+				check[c - 'a'] = true;
+				a[row][col] = c;
+				b[c - 'a'].row = row;
+				b[c - 'a'].col = col;
+				col++;
+				if (col == 5) {
+					row++;
+					col = 0;
+				}
+			}
+		}
+		for (int i = 0; i < 26; i++) {
+			if (!check[i]) {
+				a[row][col] = (char)(i + 'a');
+				col++;
+				if (col == 5) {
+					row++;
+					col = 0;
+				}
+			}
+		}
+		
+		String encryp = 0;
+	}
+	
+	static class myChar {
+		int row, col;
+	}
+}

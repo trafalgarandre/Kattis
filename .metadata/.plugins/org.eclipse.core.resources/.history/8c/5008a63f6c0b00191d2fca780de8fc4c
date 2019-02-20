@@ -1,0 +1,45 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringTokenizer;
+
+
+public class kattis_wheresmyinternet {
+	public static void main(String args[]) throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer tokenizer = new StringTokenizer(reader.readLine());
+		int n = Integer.parseInt(tokenizer.nextToken());
+		int m = Integer.parseInt(tokenizer.nextToken());
+		DisjointSet g = new DisjointSet();
+		for (int i = 0; i < n; i++) {
+			g.makeSet(i);
+		}
+		for (int i = 0; i < m; i++) {
+			tokenizer = new StringTokenizer(reader.readLine());
+			g.union(Integer.parseInt(tokenizer.nextToken()) - 1, Integer.parseInt(tokenizer.nextToken()) - 1);
+		}
+		
+		boolean isConnected = true;
+		for (int i = 1 ; i < n; i++) {
+			if (g.findSet(i) != g.findSet(0)) {
+				isConnected = false;
+				System.out.println(i + 1);
+			}
+		}
+		if (isConnected) {
+			System.out.println("Connected");
+		}
+	}
+	
+	static class Node {
+		ArrayList<Node> des;
+		int index;
+		
+		Node(int _index) {
+			index = _index;
+		}
+	}
+}

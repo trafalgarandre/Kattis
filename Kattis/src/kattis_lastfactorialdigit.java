@@ -1,0 +1,20 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+
+public class kattis_lastfactorialdigit {
+	public static void main(String args[]) throws NumberFormatException, IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		int t = Integer.parseInt(reader.readLine());
+		int[] fac = new int[11];
+		fac[0] = 1;
+		for (int i = 1; i <= 10; i++) {
+			fac[i] = fac[i - 1] * i;
+		}
+		for (int i = 0; i < t; i++) {
+			String s = Integer.toString(fac[Integer.parseInt(reader.readLine())]);
+			System.out.println(s.charAt(s.length() - 1));
+		}
+	}
+}

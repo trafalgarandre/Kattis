@@ -1,0 +1,57 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+
+public class kattis_countingstars {
+	public static void main(String args[]) throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		String s;
+		int case_num = 0;
+		while ((s = reader.readLine()) != null) {
+			case_num++;
+			int rank = 0;
+			StringTokenizer tokenizer = new StringTokenizer(s);
+			int m = Integer.parseInt(tokenizer.nextToken());
+			int n = Integer.parseInt(tokenizer.nextToken());
+			int[][] graph = new int[m][n];
+			char[][] a= new char[m][n];
+			for (int i = 0; i < m; i++) {
+				for (int j = 0; j < n; j++) {
+					graph[i][j] = -1;
+				}
+			}
+			for (int i = 0; i < m; i++) {
+				String s2 = reader.readLine();
+				for (int j = 0; j < n; j++) {
+					a[i][j] = s2.charAt(j);
+				}
+			}
+			
+			for (int i = 0; i < m; i++) {
+				for (int j = 0; j < n; j++) {
+					if (a[i][j] == '-') {
+						int temp_rank = rank;
+						if (graph[i][j] != -1) {
+							temp_rank = graph[i][j];
+						} else if (j < n - 1 && graph[i][j + 1] != -1) {
+							temp_rank = graph[i][j + 1];
+						} else {
+							rank++;
+							temp_rank = rank;
+						}
+						graph[i][j] = temp_rank;
+						if (j < n - 1 && a[i][j + 1] == '-') {
+							graph[i][j + 1] = temp_rank;
+						}
+						if (i < m - 1 && a[i + 1][j] == '-') {
+							graph[i + 1][j] = temp_rank;
+						}
+					}
+				}
+			}
+			System.out.println("Case " + case_num + ": " + rank);
+		}
+	}
+}

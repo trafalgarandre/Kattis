@@ -1,0 +1,211 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Iterator;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
+
+public class kattis_freeweights {
+	public static void main(String args[]) throws NumberFormatException, IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		int n = Integer.parseInt(reader.readLine());
+		int pos = 0;
+		int[] a = new int[n];
+		Node[][] rest = new Node[1000000][2];
+		TreeMap<Integer, Integer> map = new TreeMap<Integer, Integer>();
+		TreeSet<Integer> check = new TreeSet<Integer>();
+		TreeSet<Integer> database = new TreeSet<Integer>();
+		StringTokenizer tokenizer = new StringTokenizer(reader.readLine());
+		for (int i = 0; i < n; i++) {
+			a[i] = Integer.parseInt(tokenizer.nextToken());
+			if (!check.contains(a[i])) {
+				database.add(a[i]);
+				check.add(a[i]);
+			} else {
+				check.remove(a[i]);
+			}
+		}
+		int weight = 0;
+		Iterator<Integer> iter = check.iterator();
+		while (iter.hasNext()) {
+			int temp = iter.next();
+			database.remove(temp);
+			if (temp > weight) {
+				weight = temp;
+			}
+		}
+		boolean isFirst = true;
+		Node l1 = null;
+		Node e1 = null;
+		Node prev = null;
+		for (int i = 0; i < n; i++) {
+			if (!check.contains(a[i]) && a[i] > weight) {
+				if (isFirst) {
+					isFirst = false;
+					l1 = new Node(a[i]);
+					prev = l1;
+				} else {
+					Node cur = new Node(a[i]);
+					prev.next = cur;
+					cur.prev = prev;
+					prev = cur;
+				}
+				if (map.containsKey(a[i])) {
+					rest[map.get(a[i])][1] = prev;
+				} else {
+					rest[pos][0] = prev;
+					map.put(a[i], pos);
+					pos++;
+				}
+			}
+		}
+		e1 = prev;
+		isFirst = true;
+		Node l2 = null;
+		Node e2 = null;
+		tokenizer = new StringTokenizer(reader.readLine());
+		for (int i = 0; i < n; i++) {
+			int temp = Integer.parseInt(tokenizer.nextToken());
+			if (!check.contains(temp) && temp > weight) {
+				if (isFirst) {
+					isFirst = false;
+					l2 = new Node(temp);
+					prev = l2;
+				} else {
+					Node cur = new Node(temp);
+					prev.next = cur;
+					cur.prev = prev;
+					prev = cur;
+				}
+				database.add(temp);
+				if (map.containsKey(temp)) {
+					rest[map.get(temp)][1] = prev;
+				} else {
+					rest[pos][0] = prev;
+					map.put(temp, pos);
+					pos++;
+				}
+			}
+		}
+		e2 = prev;
+		Node cur;
+		while (l1 != null && l1.next != null && l1.val == l1.next.val) {
+			database.remove(l1.val);
+			l1 = l1.next.next;
+			if (l1 != null) {
+				l1.prev = null;
+			}
+		}
+		if (l1 != null) {
+			while (e1 != null && e1.prev != null && e1.val == e1.prev.val) {
+				database.remove(e1.val);
+				e1 = e1.prev.prev;
+				if (e1 != null) {
+					e1.next = null;
+				}
+			}
+		}
+		
+		while (l2 != null && l2.next != null && l2.val == l2.next.val) {
+			database.remove(l2.val);
+			l2 = l2.next.next;
+			if (l2 != null) {
+				l2.prev = null;
+			}
+		}
+		if (l2 != null) {
+			while (e2 != null && e2.prev != null && e2.val == e2.prev.val) {
+				database.remove(e2.val);
+				e2 = e2.prev.prev;
+				if (e2 != null) {
+					e2.next = null;
+				}
+			}
+		}
+	
+		
+		PriorityQueue<Integer> queue = new PriorityQueue<Integer>();
+		iter = database.iterator();
+		while (iter.hasNext()) {
+			queue.add(iter.next());
+		}
+		while (!queue.isEmpty()) {
+			weight = queue.poll();
+			for (int i = 0; i < 2; i++) {
+				cur = rest[map.get(weight)][i];
+				if (cur == l1) {
+					l1 = cur.next;
+					if (l1 != null) {
+						l1.prev = null;
+					}
+				} else if (cur == l2) {
+					l2 = cur.next;
+					if (l2 != null) {
+						l2.prev = null;
+					}
+				} else if (cur == e1) {
+					e1 = cur.prev;
+					if (e1 != null) {
+						e1.next = null;
+					}
+				} else if (cur == e2) {
+					e2 = cur.prev;
+					if (e2 != null) {
+						e2.next = null;
+					}
+				} else {
+					cur.prev.next = cur.next;
+					if (cur.next != null) {
+						cur.next.prev = cur.prev;
+					}
+					cur = cur.prev;
+				}
+				
+				while (l1 != null && l1.next != null && l1.val == l1.next.val) {
+					queue.remove(l1.val);
+					l1 = l1.next.next;
+					if (l1 != null) {
+						l1.prev = null;
+					}
+				}
+				
+				while (l2 != null && l2.next != null && l2.val == l2.next.val) {
+					queue.remove(l2.val);
+					l2 = l2.next.next;
+					if (l2 != null) {
+						l2.prev = null;
+					}
+				}
+				
+				while (e1 != null && e1.prev != null && e1.val == e1.prev.val) {
+					queue.remove(e1.val);
+					e1 = e1.prev.prev;
+					if (e1 != null) {
+						e1.next = null;
+					}
+				}
+				while (e2 != null && e2.prev != null && e2.val == e2.prev.val) {
+					queue.remove(e2.val);
+					e2 = e2.prev.prev;
+					if (e2 != null) {
+						e2.next = null;
+					}
+				}
+			}
+		}
+		System.out.println(weight);
+	}
+	
+	static class Node {
+		Node prev = null;
+		Node next = null;
+		int val;
+		
+		Node (int _val) {
+			val = _val;
+		}
+	}
+}

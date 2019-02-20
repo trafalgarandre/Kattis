@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1548834189 source:/home/trafalgarandre/Desktop/CP/Kattis/Kattis/kattis_builddeps/main.cpp
+	<vector>
+	<iostream>
+	<map>
+	<sstream>
+	<unordered_map>
+	<queue>
+

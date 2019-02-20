@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1547293360 source:/home/trafalgarandre/Desktop/CP/Kattis/Kattis/kattis_closestsums/main.cpp
+	<iostream>
+	<algorithm>
+	<vector>
+

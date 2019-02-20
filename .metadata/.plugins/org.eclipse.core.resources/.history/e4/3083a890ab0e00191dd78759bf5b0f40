@@ -1,0 +1,31 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.StringTokenizer;
+
+
+public class kattis_aprizenoonecanwin {
+	public static void main(String args[]) throws NumberFormatException, IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer tokenizer = new StringTokenizer(reader.readLine());
+		int n = Integer.parseInt(tokenizer.nextToken());
+		int x = Integer.parseInt(tokenizer.nextToken());
+		ArrayList<Integer> a = new ArrayList<Integer>();
+		tokenizer = new StringTokenizer(reader.readLine());
+		for (int i = 0; i < n; i++) {
+			int temp = Integer.parseInt(tokenizer.nextToken());
+			if (temp < x) {
+				a.add(temp);
+			}
+		}
+		Collections.sort(a);
+		int min = 0;
+		int temp = 0;
+		while (temp < a.size() && a.get(temp) + min <= x) {
+			min = a.get(temp);
+			temp++;
+		}
+	}
+}

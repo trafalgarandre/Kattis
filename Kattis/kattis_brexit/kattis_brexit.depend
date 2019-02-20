@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1547040277 source:/home/trafalgarandre/Desktop/CP/Kattis/Kattis/kattis_brexit/main.cpp
+	<iostream>
+	<vector>
+	<queue>
+

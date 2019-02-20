@@ -1,0 +1,43 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+
+public class kattis_countingstars {
+	public static void main(String args[]) throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		String s;
+		while ((s = reader.readLine()) != null) {
+			int rank = 0;
+			int row = 0;
+			StringTokenizer tokenizer = new StringTokenizer(s);
+			int m = Integer.parseInt(tokenizer.nextToken());
+			int n = Integer.parseInt(tokenizer.nextToken());
+			int[][] graph = new int[m][n];
+			for (int i = 0; i < m; i++) {
+				for (int j = 0; j < n; j++) {
+					graph[i][j] = -1;
+				}
+			}
+			for (int i = 0; i < m; i++) {
+				String s2 = reader.readLine();
+				for (int j = 0; j < n; j++) {
+					if (s2.charAt(j) == '-') {
+						if (graph[i][j] == -1) {
+							if (i > 0 && graph[i - 1][j] != -1) {
+								graph[i][j] = graph[i - 1][j];
+							} else if (j > 0 && graph[i][j - 1] != -1) {
+								graph[i][j] = graph[i][j - 1];
+							} else {
+								graph[i][j] = rank;
+								rank++;
+							}
+						}
+					}
+				}
+			}
+			System.out.println(rank);
+		}
+	}
+}

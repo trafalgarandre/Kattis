@@ -1,0 +1,90 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.StringTokenizer;
+
+
+public class b_mini1 {
+	public static void main(String args[]) throws NumberFormatException, IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		int tc = Integer.parseInt(reader.readLine());
+		for(int i = 0; i < tc; i++) {
+			StringTokenizer tokenizer = new StringTokenizer(reader.readLine());
+			Frac a = new Frac(tokenizer.nextToken(), Integer.parseInt(tokenizer.nextToken()));
+			Frac b = new Frac(tokenizer.nextToken(), Integer.parseInt(tokenizer.nextToken()));
+			Frac result = Frac.plus(a, b);
+			System.out.println(result.up + "/" + result.down);
+		}
+	}
+	
+	static class Frac {
+		BigInteger up;
+		BigInteger down = BigInteger.ONE;
+		
+		public Frac(String x, int n) {
+			BigInteger _up;
+			if (x.length() - n == x.length()) {
+				_up = BigInteger.ZERO;
+			} else {
+				_up = new BigInteger(x.substring(x.length() - n));
+			}
+			BigInteger _down = BigInteger.ONE;
+			for (int i = 0; i < n; i++) {
+				_down = _down.multiply(BigInteger.TEN);
+			}
+			_down = _down.subtract(BigInteger.ONE);
+			for (int i = 0; i < x.length() - n; i++) {
+				_down = _down.multiply(BigInteger.TEN);
+			}
+
+			Frac trep = new Frac(_up, _down);
+			
+			
+			if (x.length() - n == 0) {
+				_up = BigInteger.ZERO;
+			} else {
+				_up = new BigInteger(x.substring(0, x.length() - n));
+			}
+			_down = BigInteger.ONE;
+			for (int i = 0; i < x.length() - n; i++) {
+				_down = _down.multiply(BigInteger.TEN);
+			}
+			
+
+			Frac tnrep = new Frac(_up, _down);
+			Frac temp = plus(trep, tnrep);
+			up = temp.up;
+			down = temp.down;
+		}
+		
+		public Frac(BigInteger _up, BigInteger _down) {
+			up = _up;
+			down = _down;
+			reduce();
+		}
+		
+		void reduce() {
+			if (up.equals(BigInteger.ZERO)) {
+				down = BigInteger.ONE;
+			} else {
+				BigInteger gcd = gcd(up, down);
+				up = up.divide(gcd);
+				down = down.divide(gcd);
+			}
+		}
+		
+		static Frac plus(Frac x, Frac y) {
+			BigInteger gcd = gcd(x.down, y.down);
+			BigInteger _down = x.down.multiply(y.down).divide(gcd);
+			BigInteger _up = x.up.multiply(_down.divide(x.down)).add(
+					y.up.multiply(_down.divide(y.down)));
+			return new Frac(_up, _down);
+		}
+	}
+	
+	static BigInteger gcd(BigInteger a, BigInteger b) {
+		return b.equals(BigInteger.ZERO) ? a : gcd(b, a.mod(b));
+	}
+}

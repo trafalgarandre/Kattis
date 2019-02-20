@@ -1,0 +1,128 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+
+
+public class kattis_helpme {
+	public static void main(String args[]) throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		ArrayList<Chess> black = new ArrayList<Chess>();
+		ArrayList<Chess> white = new ArrayList<Chess>();
+		for (int i = 0; i < 8; i++) {
+			reader.readLine();
+			String str = reader.readLine();
+			int start = 2;
+			for (int j = 0; j < 8; j++) {
+				char cur = str.charAt(start);
+				if (cur != '.' && cur != ':') {
+					Chess chess = new Chess(cur, (char)(j + 'a'), 8 - i);
+					if (chess.isWhite) {
+						white.add(chess);
+					} else {
+						black.add(chess);
+					}
+				}
+				start += 4;
+			}
+		}
+		Collections.sort(white);
+		Collections.sort(black);
+		System.out.print("White: ");
+		for (int i = 0; i < white.size(); i++) {
+			Chess cur = white.get(i);
+			if (cur.val_type != 5) {
+				System.out.print(cur.type + "" + cur.col + "" + cur.row);
+			} else {
+				System.out.print(cur.col + "" + cur.row);
+			}
+			if (i != white.size() - 1) {
+				System.out.print(",");
+			}
+		}
+		System.out.println();
+		System.out.print("Black: ");
+		for (int i = 0; i < black.size(); i++) {
+			Chess cur = black.get(i);
+			if (cur.val_type != 5) {
+				System.out.print(cur.type + "" + cur.col + "" + cur.row);
+			} else {
+				System.out.print(cur.col + "" + cur.row);
+			}
+			if (i == black.size() - 1) {
+				System.out.print(",");
+			}
+		}
+	}
+	
+	static class Chess implements Comparable<Chess> {
+		char type;
+		int val_type;
+		char col;
+		int row;
+		boolean isWhite;
+		Chess(char _type, char _col, int _row) {
+			type = _type;
+			col = _col;
+			row = _row;
+			isWhite = false;
+			if (type >= 'A' && type <= 'Z') {
+				isWhite = true;
+			}
+			if (type == 'K' || type == 'k') {
+				if (type == 'k') {
+					type = 'K';
+				}
+				val_type = 0;
+			} else if (type == 'Q' || type == 'q') {
+				if (type == 'q') {
+					type = 'Q';
+				}
+				val_type = 1;
+			} else if (type == 'R' || type == 'r') {
+				if (type == 'r') {
+					type = 'R';
+				}
+				val_type = 2;
+			} else if (type == 'B' || type == 'b') {
+				if (type == 'b') {
+					type = 'B';
+				}
+				val_type = 3;
+			} else if (type == 'N' || type == 'n') {
+				if (type == 'n') {
+					type = 'N';
+				}
+				val_type = 4;
+			} else {
+				val_type = 5;
+			}
+		}
+		
+		public int compareTo(Chess other) {
+			if (this.isWhite) {
+				if (this.val_type == other.val_type) {
+					if (this.row == other.row) {
+						return this.col - other.col;
+					} else {
+						return this.row - other.row;
+					}
+				} else {
+					return this.val_type - other.val_type;
+				}
+			} else {
+				if (this.val_type == other.val_type) {
+					if (this.row == other.row) {
+						return this.col - other.col;
+					} else {
+						return other.row - this.row;
+					}
+				} else {
+					return this.val_type - other.val_type;
+				}
+			}
+		}
+		
+	}
+}

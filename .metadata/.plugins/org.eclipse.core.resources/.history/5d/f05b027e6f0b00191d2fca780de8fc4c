@@ -1,0 +1,66 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
+
+
+public class kattis_wheresmyinternet {
+	public static void main(String args[]) throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer tokenizer = new StringTokenizer(reader.readLine());
+		int n = Integer.parseInt(tokenizer.nextToken());
+		int m = Integer.parseInt(tokenizer.nextToken());
+		boolean[] check = new boolean[n];
+		Node[] nodes = new Node[n];
+		
+		for (int i = 0; i < n; i++) {
+			nodes[i] = new Node(i);
+			check[i] = false;
+		}
+		for (int i = 0; i < m; i++) {
+			tokenizer = new StringTokenizer(reader.readLine());
+			int src = Integer.parseInt(tokenizer.nextToken()) - 1;
+			int des = Integer.parseInt(tokenizer.nextToken()) - 1;
+			nodes[src].des.add(nodes[des]);
+			nodes[des].des.add(nodes[src]);
+		}
+		
+		Queue<Node> queue = new LinkedList<Node>();
+		queue.add(nodes[0]);
+		check[0] = true;
+		
+		while (!queue.isEmpty()) {
+			Node cur = queue.poll();
+			for (Node node: cur.des) {
+				if (!check[node.index]) {
+					check[node.index] = true;
+					queue.add(node);
+				}
+			}
+		}
+		
+		boolean isConnected = true;
+		for (int i = 1 ; i < n; i++) {
+			if (!check[i]) {
+				isConnected = false;
+				System.out.println(i + 1);
+			}
+		}
+		if (isConnected) {
+			System.out.println("Connected");
+		}
+	}
+	
+	static class Node {
+		ArrayList<Node> des;
+		int index;
+		
+		Node(int _index) {
+			index = _index;
+			des = new ArrayList<Node>();
+		}
+	}
+}

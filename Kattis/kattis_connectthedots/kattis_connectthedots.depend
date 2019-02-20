@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1546432536 source:/home/trafalgarandre/Desktop/CP/Kattis/Kattis/kattis_connectthedots/main.cpp
+	<iostream>
+	<string>
+	<vector>
+

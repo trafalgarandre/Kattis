@@ -1,0 +1,72 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.StringTokenizer;
+
+
+public class b_mini1 {
+	public static void main(String args[]) throws NumberFormatException, IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		int tc = Integer.parseInt(reader.readLine());
+		for(int i = 0; i < tc; i++) {
+			StringTokenizer tokenizer = new StringTokenizer(reader.readLine());
+			BigDecimal x1 = new BigDecimal("0." + tokenizer.nextToken());
+			int n1 = Integer.parseInt(tokenizer.nextToken());
+			BigDecimal x2 = new BigDecimal("0." + tokenizer.nextToken());
+			int n2 = Integer.parseInt(tokenizer.nextToken());
+		}
+	}
+	
+	static class Frac {
+		BigInteger up;
+		BigInteger down = BigInteger.ONE;
+		
+		public Frac(String x, int n) {
+			BigInteger _up = new BigInteger(x.substring(x.length() - n));
+			BigInteger _down = BigInteger.ONE;
+			for (int i = 0; i < n; i++) {
+				_down = _down.multiply(BigInteger.TEN);
+			}
+			_down = _down.subtract(BigInteger.ONE);
+			for (int i = 0; i < x.length() - n; i++) {
+				_down = _down.multiply(BigInteger.TEN);
+			}
+
+			Frac trep = new Frac(_up, _down);
+			
+			_up = new BigInteger(x.substring(0, x.length() - n));
+			_down = BigInteger.ONE;
+			for (int i = 0; i < x.length() - n; i++) {
+				_down = _down.multiply(BigInteger.TEN);
+			}
+			
+
+			Frac tnrep = new Frac(_up, _down)
+		}
+		
+		public Frac(BigInteger _up, BigInteger _down) {
+			up = _up;
+			down = _down;
+			reduce();
+		}
+		
+		void reduce() {
+			BigInteger gcd = gcd(up, down);
+			up = up.divide(gcd);
+			down = down.divide(gcd);
+		}
+		
+		Frac plus(Frac x, Frac y) {
+			BigInteger gcd = gcd(x.down, y.down);
+			BigInteger _down = x.down.multiply(y.down).divide(gcd);
+			BigInteger _up = x.up.multiply(_down.divide(x.down))
+					+ y.up.multiply(_down.divide(y.down));
+		}
+	}
+	
+	static BigInteger gcd(BigInteger a, BigInteger b) {
+		return b.equals(BigDecimal.ZERO) ? a : gcd(b, a.mod(b));
+	}
+}

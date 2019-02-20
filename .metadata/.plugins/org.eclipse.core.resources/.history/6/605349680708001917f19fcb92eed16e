@@ -1,0 +1,77 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+
+public class kattis_empleh {
+	public static void main(String args[]) throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer tokenizer = new StringTokenizer(reader.readLine());
+		int[][] a = new int[8][8];
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				a[i][j] = 0;
+			}
+		}
+		tokenizer.nextToken();
+		tokenizer = new StringTokenizer(tokenizer.nextToken());
+		while (tokenizer.hasMoreTokens()) {
+			String cur = tokenizer.nextToken(",");
+			if (cur.length() == 3) {
+				int let = cur.charAt(0) - 'A';
+				int col = cur.charAt(1) - 'a';
+				int row = 8 - (cur.charAt(2) - '0');
+				a[row][col] = let;
+			} else {
+				int let = 'P' - 'A';
+				int col = cur.charAt(0) - 'a';
+				int row = 8 - (cur.charAt(1) - '0');
+				a[row][col] = let;
+			}
+		}
+		tokenizer = new StringTokenizer(reader.readLine());
+		tokenizer.nextToken();
+		tokenizer = new StringTokenizer(tokenizer.nextToken());
+		while (tokenizer.hasMoreTokens()) {
+			String cur = tokenizer.nextToken(",");
+			if (cur.length() == 3) {
+				int let = cur.charAt(0) - 'A' + 'a' - 'A';
+				int col = cur.charAt(1) - 'a';
+				int row = 8 - (cur.charAt(2) - '0');
+				a[row][col] = let;
+			} else {
+				int let = 'P' - 'A' + 'a' - 'A';
+				int col = cur.charAt(0) - 'a';
+				int row = 8 - (cur.charAt(1) - '0');
+				a[row][col] = let;
+			}
+		}
+		for (int i = 0; i < 8; i++) {
+			printBar();
+			System.out.print("|");
+			for (int j = 0; j < 8; j++) {
+				if (a[i][j] == 0) {
+					if ((i + j) % 2 == 0) {
+						System.out.print("...");
+					} else {
+						System.out.print(":::");
+					}
+				} else {
+					if ((i + j) % 2 == 0) {
+						System.out.print("." + (char)(a[i][j] + 'A') + ".");
+					} else {
+						System.out.print(":" + (char)(a[i][j] + 'A') + ":");
+					}
+				}
+				System.out.println("|");
+			}
+			System.out.println();
+		}
+		printBar();
+	}
+	
+	static void printBar() {
+		System.out.println("+---+---+---+---+---+---+---+---+");
+	}
+}

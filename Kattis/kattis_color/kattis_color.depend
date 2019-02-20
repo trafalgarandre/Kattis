@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1546530141 source:/home/trafalgarandre/Desktop/CP/Kattis/Kattis/kattis_color/main.cpp
+	<bits/stdc++.h>
+	<iostream>
+	<algorithm>
+

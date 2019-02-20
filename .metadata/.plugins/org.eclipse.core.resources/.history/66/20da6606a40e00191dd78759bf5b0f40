@@ -1,0 +1,79 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+
+public class kattis_gridgame {
+	static boolean[][] check;
+	static int[][] a;
+	static boolean[] row, col;
+	static int n;
+	
+	public static void main(String args[]) throws NumberFormatException, IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		n = Integer.parseInt(reader.readLine());
+		a = new int[n][n];
+		Node[] nodes = new Node[n * n];
+		check = new boolean[n][n];
+		for (int i = 0; i < n; i++) {
+			StringTokenizer tokenizer = new StringTokenizer(reader.readLine());
+			for (int j = 0; j < n; j++) {
+				a[i][j] = Integer.parseInt(tokenizer.nextToken());
+				nodes[i * n + j] = new Node(i, j, a[i][j]);
+				check[i][j] = false;
+			}
+		}
+		Arrays.sort(nodes);
+		int count = n * n - 1;
+		int result = 0;
+		while (count >= n - 1) {
+//			check[nodes[count].row][nodes[count].col] = true;
+			int temp = 1;
+			row = new boolean[n];
+			col = new boolean[n];
+			row[nodes[count].row] = true;
+			col[nodes[count].col] = true;
+			if (findCombination(0)) {
+				result = nodes[count].weight;
+			}
+			count--;
+		}
+		System.out.println(result);
+	}
+	
+	public static boolean findCombination(int r) {
+		if (r == n) {
+			return true;
+		} else {
+			boolean result = false;
+			for (int i = 0; i < n; i++) {
+				if (!check[r][i] && !row[r] && !col[i]) {
+					check[r][i] = true;
+					row[r] = true;
+					col[i] = true;
+					result = findCombination(r + 1);
+					col[i] = false;
+					row[r] = false;
+					check[r][i] = false;
+				}
+			}
+			return result;
+		}
+		
+	}
+	
+	static class Node implements Comparable<Node> {
+		int row, col, weight;
+		Node(int _row, int _col, int _weight) {
+			row = _row;
+			col = _col;
+			weight = _weight;
+		}
+		
+		public int compareTo(Node other) {
+			return other.weight - this.weight;
+		}
+	}
+}

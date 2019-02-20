@@ -1,0 +1,21 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.util.StringTokenizer;
+
+
+public class b_mini1 {
+	public static void main(String args[]) throws NumberFormatException, IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		int tc = Integer.parseInt(reader.readLine());
+		for(int i = 0; i < tc; i++) {
+			StringTokenizer tokenizer = new StringTokenizer(reader.readLine());
+			BigDecimal x1 = new BigDecimal(tokenizer.nextToken());
+			int n1 = Integer.parseInt(tokenizer.nextToken());
+			BigDecimal x2 = new BigDecimal(tokenizer.nextToken());
+			int n2 = Integer.parseInt(tokenizer.nextToken());
+				
+		}
+	}
+}

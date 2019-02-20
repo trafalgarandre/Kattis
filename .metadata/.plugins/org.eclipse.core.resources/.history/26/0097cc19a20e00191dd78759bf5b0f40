@@ -1,0 +1,60 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+
+public class kattis_gridgame {
+	public static void main(String args[]) throws NumberFormatException, IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		int n = Integer.parseInt(reader.readLine());
+		int[][] a = new int[n][n];
+		Node[] nodes = new Node[n * n];
+//		boolean[][] check = new boolean[n][n];
+		for (int i = 0; i < n; i++) {
+			StringTokenizer tokenizer = new StringTokenizer(reader.readLine());
+			for (int j = 0; j < n; j++) {
+				a[i][j] = Integer.parseInt(tokenizer.nextToken());
+				nodes[i * n + j] = new Node(i, j, a[i][j]);
+//				check[i][j] = false;
+			}
+		}
+		Arrays.sort(nodes);
+		int count = n * n - 1;
+		int result = 0;
+		while (count >= n) {
+//			check[nodes[count].row][nodes[count].col] = true;
+			int temp = 1;
+			boolean[] row = new boolean[n];
+			boolean[] col = new boolean[n];
+			row[nodes[count].row] = true;
+			col[nodes[count].col] = true;
+			for (int i = 0; i < count; i++) {
+				if (!row[nodes[i].row] && !col[nodes[i].col]) {
+					row[nodes[i].row] = true;
+					col[nodes[i].col] = true;
+					temp++;
+				}
+			}
+			if (temp == n) {
+				result = nodes[count].weight;
+			}
+			count--;
+		}
+		System.out.println(result);
+	}
+	
+	static class Node implements Comparable<Node> {
+		int row, col, weight;
+		Node(int _row, int _col, int _weight) {
+			row = _row;
+			col = _col;
+			weight = _weight;
+		}
+		
+		public int compareTo(Node other) {
+			return other.weight - this.weight;
+		}
+	}
+}

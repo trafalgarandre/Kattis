@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1546347544 source:/home/trafalgarandre/Desktop/CP/Kattis/Kattis/kattis_crosscountry/main.cpp
+	<iostream>
+	<vector>
+

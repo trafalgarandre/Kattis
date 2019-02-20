@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1546969435 source:/home/trafalgarandre/Desktop/CP/Kattis/Kattis/kattis_torn2pieces/main.cpp
+	<iostream>
+	<unordered_map>
+	<vector>
+	<sstream>
+

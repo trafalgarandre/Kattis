@@ -1,0 +1,45 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+
+public class kattis_thinkingofanumber {
+	public static void main(String args[]) throws NumberFormatException, IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		int n = Integer.parseInt(reader.readLine());
+		while (n != 0) {
+			int less = -1;
+			int greater = 0;
+			int divisible = 1;
+			for (int i = 0; i < n; i++) {
+				String s = reader.readLine();
+				if (s.charAt(0) == 'l') {
+					int temp = Integer.parseInt(s.substring(10));
+					if (temp < less || less == -1) {
+						less = temp;
+					}
+				} else if (s.charAt(0) == 'g') {
+					int temp = Integer.parseInt(s.substring(13));
+					if (temp > greater) {
+						greater = temp;
+					}
+				} else {
+					int gcd = 1;
+					int temp = Integer.parseInt(s.substring(13));
+					int n1 = temp;
+					int n2 = divisible;
+			        while(n1 != n2)
+			        {
+			            if(n1 > n2)
+			                n1 -= n2;
+			            else
+			                n2 -= n1;
+			        }
+
+			        divisible = (divisible * temp) / n1;
+				}
+			}
+			n = Integer.parseInt(reader.readLine());
+		}
+	}
+}

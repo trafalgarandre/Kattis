@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1546518499 source:/home/trafalgarandre/Desktop/CP/Kattis/Kattis/kattis_dreamer/main.cpp
+	<iostream>
+	<set>
+	<string.h>
+

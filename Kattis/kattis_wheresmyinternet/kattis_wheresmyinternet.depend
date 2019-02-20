@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1546341890 source:/home/trafalgarandre/Desktop/CP/Kattis/Kattis/kattis_wheresmyinternet/main.cpp
+	<iostream>
+	<vector>
+	<queue>
+

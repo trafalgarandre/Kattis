@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1547035735 source:/home/trafalgarandre/Desktop/CP/Kattis/Kattis/kattis_integerlists/main.cpp
+	<iostream>
+	<list>
+	<sstream>
+

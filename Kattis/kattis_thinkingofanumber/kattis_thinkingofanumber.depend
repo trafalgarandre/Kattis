@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1546452946 source:/home/trafalgarandre/Desktop/CP/Kattis/Kattis/kattis_thinkingofanumber/main.cpp
+	<iostream>
+	<string.h>
+	<math.h>
+

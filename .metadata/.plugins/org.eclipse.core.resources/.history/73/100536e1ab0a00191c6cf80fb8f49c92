@@ -1,0 +1,213 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Iterator;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
+
+public class kattis_freeweights {
+	public static void main(String args[]) throws NumberFormatException, IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		int n = Integer.parseInt(reader.readLine());
+		int[] a = new int[n];
+		TreeSet<Integer> check = new TreeSet<Integer>(); 
+		StringTokenizer tokenizer = new StringTokenizer(reader.readLine());
+		for (int i = 0; i < n; i++) {
+			a[i] = Integer.parseInt(tokenizer.nextToken());
+			if (!check.contains(a[i])) {
+				check.add(a[i]);
+			} else {
+				check.remove(a[i]);
+			}
+		}
+		int weight = 0;
+		Iterator<Integer> iter = check.iterator();
+		while (iter.hasNext()) {
+			int temp = iter.next();
+			if (temp > weight) {
+				weight = temp;
+			}
+		}
+		boolean isFirst = true;
+		Node l1 = null;
+		Node prev = null;
+		for (int i = 0; i < n; i++) {
+			if (!check.contains(a[i]) && a[i] > weight) {
+				if (isFirst) {
+					isFirst = false;
+					l1 = new Node(a[i]);
+					prev = l1;
+				} else {
+					Node cur = new Node(a[i]);
+					prev.next = cur;
+					cur.prev = prev;
+					prev = cur;
+				}
+			}
+		}
+		isFirst = true;
+		Node l2 = null;
+		prev = null;
+		tokenizer = new StringTokenizer(reader.readLine());
+		for (int i = 0; i < n; i++) {
+			int temp = Integer.parseInt(tokenizer.nextToken());
+			if (!check.contains(temp) && temp > weight) {
+				if (isFirst) {
+					isFirst = false;
+					l2 = new Node(a[i]);
+					prev = l2;
+				} else {
+					Node cur = new Node(a[i]);
+					prev.next = cur;
+					cur.prev = prev;
+					prev = cur;
+				}
+			}
+		}
+		Node cur;
+		if (l1 != null) {
+			cur = l1.next;
+			prev = l1;
+			while (cur != null) {
+				if (prev.val == cur.val) {
+					if (prev.prev == null) {
+						l1 = cur.next;
+					} else {
+						prev.prev.next = cur.next;
+					}
+					if (cur.next != null) {
+						cur.next.prev = prev.prev;
+					}
+					prev = cur;
+					cur = cur.next;
+				}
+			}
+		}
+		
+		if (l2 != null) {
+			cur = l2.next;
+			prev = l2;
+			while (cur != null) {
+				if (prev.val == cur.val) {
+					if (prev.prev == null) {
+						l2 = cur.next;
+					} else {
+						prev.prev.next = cur.next;
+					}
+					if (cur.next != null) {
+						cur.next.prev = prev.prev;
+					}
+					prev = cur;
+					cur = cur.next;
+				}
+			}
+		}
+		int rest_size = 0;
+		cur = l1;
+		while (cur != null) {
+			rest_size++;
+			cur = cur.next;
+		}
+		cur = l2;
+		while (cur != null) {
+			rest_size++;
+			cur = cur.next;
+		}
+		TreeMap<Integer, Integer> map = new TreeMap<Integer, Integer>();
+		Node[][] rest = new Node[rest_size][2];
+		for (int i = 0; i < rest_size; i++) {
+			for (int j = 0 ; j < 2; j++) {
+				rest[i][j] = null;
+			}
+		}
+		int pos = 0;
+		if (l1 != null) {
+			cur = l1.next;
+			map.put(l1.val, pos);
+			rest[pos][0] = l1;
+			pos++;
+			while (cur != null) {
+				if (map.containsKey(cur.val)) {
+					rest[map.get(cur.val)][1] = cur;
+				} else {
+					rest[pos][0] = cur;
+					map.put(cur.val, pos);
+					pos++;
+				}
+				cur = cur.next;
+			}
+		}
+		if (l2 != null) {
+			cur = l2.next;
+			map.put(l2.val, pos);
+			rest[pos][0] = l2;
+			pos++;
+			while (cur != null) {
+				if (map.containsKey(cur.val)) {
+					rest[map.get(cur.val)][1] = cur;
+				} else {
+					rest[pos][0] = cur;
+					map.put(cur.val, pos);
+					pos++;
+				}
+				cur = cur.next;
+			}
+		}
+		
+		PriorityQueue<Integer> queue = new PriorityQueue<Integer>();
+		queue.addAll(map.keySet());
+		while (!queue.isEmpty()) {
+			weight = queue.poll();
+			for (int i = 0; i < 2; i++) {
+				cur = rest[map.get(weight)][i];
+				if (cur == l1) {
+					l1 = cur.next;
+					if (l1 != null) {
+						l1.prev = null;
+					}
+				} else if (cur == l2) {
+					l2 = cur.next;
+					if (l2 != null) {
+						l2.prev = null;
+					}
+				} else {
+					cur.prev.next = cur.next;
+					if (cur.next != null) {
+						cur.next.prev = cur.prev;
+					}
+					cur = cur.prev;
+					while (cur == cur.next) {
+						queue.remove(cur.val);
+						if (cur == l1) {
+							l1 = cur.next.next;
+							l1.prev = null;
+						} else if (cur == l2) {
+							l2 = cur.next.next;
+							l2.prev = null;
+						} else {
+							cur.prev.next = cur.next.next;
+							if (cur.next.next != null) {
+								cur.next.next.prev = cur.prev;
+							}
+						}
+						cur = cur.prev;
+					}
+				}
+			}
+		}
+		System.out.println(weight);
+	}
+	
+	static class Node {
+		Node prev = null;
+		Node next = null;
+		int val;
+		
+		Node (int _val) {
+			val = _val;
+		}
+	}
+}

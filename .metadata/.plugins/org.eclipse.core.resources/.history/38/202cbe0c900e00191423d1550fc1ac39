@@ -1,0 +1,16 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+
+public class kattis_playfair {
+	public static void main(String args[]) throws NumberFormatException, IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		
+		boolean[] check = new boolean[27];
+		for (int i = 0; i < 27; i++) {
+			check[i] = false;
+		}
+		check['q' - 'a'] = true;
+	}
+}
